@@ -1,2 +1,2 @@
-# analysis
+# Analysis
 Some analysis scripts.

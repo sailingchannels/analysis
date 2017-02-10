@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-import config, sys
+import config, sys, json
 from datetime import datetime
 
 # open mongodb connection
@@ -31,9 +31,21 @@ for vid in vids:
 	punchcard[dt.weekday()][dt.hour] += 1
 	counter += 1
 
-render = []
-for weekday in punchcard:
-	for hour in punchcard[weekday]:
-		render.append([weekday, hour, punchcard[weekday][hour]])
+counter -= 1
+print counter, "/", num_vids
 
-print render
+render = []
+weekidx = 0
+for weekday in punchcard:
+
+	houridx = 0
+	for hour in weekday:
+		render.append([weekidx, houridx, weekday[houridx]])
+		houridx += 1
+
+	weekidx += 1
+
+# write result to file
+f = open("data.js", "w")
+f.write("var data = " + json.dumps(render) + ";")  # python will convert \n to os.linesep
+f.close()
